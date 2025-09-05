@@ -23,8 +23,8 @@ A beautiful, personalized news experience with AI-generated imagery and user pre
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
-   cd visual-news-app
+   git clone https://github.com/UdayAnalyst/visual-news.git
+   cd visual-news
    ```
 
 2. **Install dependencies**
@@ -104,7 +104,7 @@ The project includes a `render.yaml` file for automatic deployment configuration
 ## Project Structure
 
 ```
-visual-news-app/
+visual-news/
 ├── app.py                 # Main Flask application
 ├── requirements.txt       # Python dependencies
 ├── render.yaml           # Render deployment config
@@ -114,24 +114,35 @@ visual-news-app/
 ├── templates/            # HTML templates
 │   ├── index.html
 │   ├── signup.html
+│   ├── login.html
 │   └── admin.html
 ├── static/               # Static assets
 │   ├── css/
 │   └── js/
-├── users.json            # User data storage
-├── articles.json         # Article engagement data
-└── generated_images.json # AI image cache
+├── security.py           # Security module
+├── PDF Q&A LLM/         # PDF processing features
+└── Web Scrapping/       # Web scraping tools
 ```
 
 ## API Endpoints
 
 - `GET /` - Main news interface
+- `GET /login` - User login
 - `GET /signup` - User registration
 - `GET /admin` - Admin dashboard
 - `GET /api/news` - Fetch news articles
 - `GET /api/user-preferences` - Get user preferences
 - `POST /api/user-preferences` - Update user preferences
 - `POST /api/article-engagement` - Handle article likes/dislikes
+
+## Security Features
+
+- 🔒 **Password Hashing**: Bcrypt with salt
+- 🔐 **Data Encryption**: AES encryption for sensitive data
+- 🛡️ **Input Validation**: Comprehensive input sanitization
+- ⚡ **Rate Limiting**: API protection against abuse
+- 🔑 **Session Security**: Secure session management
+- 🚫 **Account Lockout**: Protection against brute force
 
 ## Security Notes
 
