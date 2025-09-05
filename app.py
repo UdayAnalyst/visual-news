@@ -20,7 +20,7 @@ import time
 from dotenv import load_dotenv
 from security import security_manager
 
-print("All imports successful")
+print("All imports successful - Deployment version 1.1")
 
 # Load environment variables from .env file
 load_dotenv()
