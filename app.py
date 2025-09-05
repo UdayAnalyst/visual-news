@@ -28,9 +28,8 @@ app.secret_key = os.getenv('FLASK_SECRET_KEY', 'your-secret-key-change-in-produc
 
 # Initialize rate limiter
 limiter = Limiter(
-    app,
     key_func=get_remote_address,
-    default_limits=["200 per day", "50 per hour"]
+    app=app
 )
 
 # Validate that required API keys are set
