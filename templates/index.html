@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual News - Beautiful News Experience</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-newspaper me-2"></i>
+                Visual News
+            </a>
+            <div class="navbar-nav ms-auto">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user me-1"></i>
+                        {{ session.user_name }}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" onclick="preferencesModal.show()">
+                            <i class="fas fa-cog me-2"></i>
+                            Preferences
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/logout">
+                            <i class="fas fa-sign-out-alt me-2"></i>
+                            Logout
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Welcome Section -->
+        <div class="welcome-section text-center py-4">
+            <h2><i class="fas fa-newspaper me-2"></i>Visual News Experience</h2>
+            <p class="mb-0">Discover news through beautiful imagery</p>
+            
+            <!-- Statistics -->
+            <div class="stats-container">
+                <div class="stat-item">
+                    <span class="stat-number" id="likedCount">0</span>
+                    <span class="stat-label">Liked</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="passedCount">0</span>
+                    <span class="stat-label">Passed</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- News Container -->
+        <div class="news-container">
+            <div class="news-card" id="newsCard">
+                <div class="card-content">
+                    <div class="news-body text-center py-5">
+                        <div class="spinner-border text-primary mb-3" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <h4>Loading Visual News...</h4>
+                        <p>Preparing your personalized news experience</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Swipe Actions -->
+        <div class="swipe-actions">
+            <button class="swipe-btn pass-btn" id="passBtn">
+                <i class="fas fa-times"></i>
+            </button>
+            <button class="swipe-btn like-btn" id="likeBtn">
+                <i class="fas fa-heart"></i>
+            </button>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="navigation-buttons">
+            <button class="nav-btn" id="prevBtn" disabled>
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="nav-btn" id="nextBtn" disabled>
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <!-- Refresh Button -->
+        <div class="text-center mt-4">
+            <button class="btn btn-outline-light" id="refreshNews">
+                <i class="fas fa-refresh me-2"></i>
+                Refresh News
+            </button>
+        </div>
+
+        <!-- Advertising Space -->
+        <div class="ad-space">
+            <div class="ad-container">
+                <div class="ad-placeholder">
+                    <i class="fas fa-ad fa-3x mb-3"></i>
+                    <h5>Advertisement Space</h5>
+                    <p>Perfect spot for your brand promotion</p>
+                    <small class="text-muted">Contact us for advertising opportunities</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preferences Modal -->
+    <div class="modal fade" id="preferencesModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-cog me-2"></i>
+                        News Preferences
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Select your interests:</label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input topic-checkbox" type="checkbox" value="inflation" id="inflation">
+                                    <label class="form-check-label" for="inflation">
+                                        <i class="fas fa-chart-line text-danger me-2"></i>
+                                        Inflation & Economy
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input topic-checkbox" type="checkbox" value="technology" id="technology">
+                                    <label class="form-check-label" for="technology">
+                                        <i class="fas fa-microchip text-primary me-2"></i>
+                                        Technology
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input topic-checkbox" type="checkbox" value="politics" id="politics">
+                                    <label class="form-check-label" for="politics">
+                                        <i class="fas fa-landmark text-warning me-2"></i>
+                                        Politics
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input topic-checkbox" type="checkbox" value="health" id="health">
+                                    <label class="form-check-label" for="health">
+                                        <i class="fas fa-heartbeat text-success me-2"></i>
+                                        Health & Medicine
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input topic-checkbox" type="checkbox" value="business" id="business">
+                                    <label class="form-check-label" for="business">
+                                        <i class="fas fa-briefcase text-info me-2"></i>
+                                        Business
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input topic-checkbox" type="checkbox" value="science" id="science">
+                                    <label class="form-check-label" for="science">
+                                        <i class="fas fa-flask text-purple me-2"></i>
+                                        Science
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input topic-checkbox" type="checkbox" value="sports" id="sports">
+                                    <label class="form-check-label" for="sports">
+                                        <i class="fas fa-football-ball text-orange me-2"></i>
+                                        Sports
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input topic-checkbox" type="checkbox" value="environment" id="environment">
+                                    <label class="form-check-label" for="environment">
+                                        <i class="fas fa-leaf text-green me-2"></i>
+                                        Environment
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="selectAllTopics()">
+                            Select All
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="selectNoTopics()">
+                            Select None
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="savePreferences">
+                        <i class="fas fa-save me-2"></i>
+                        Save Preferences
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- No More News Modal -->
+    <div class="modal fade" id="noMoreModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-info-circle me-2"></i>
+                        No More News
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
+                    <h4>That's all for now!</h4>
+                    <p>You've seen all available news articles. Check back later for more updates or refresh to see if there's new content.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="refreshNewsModal">
+                        <i class="fas fa-refresh me-2"></i>
+                        Refresh News
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - User Data</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .user-card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+        }
+        .preferences-badge {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin: 2px;
+        }
+        .no-preferences {
+            color: #dc3545;
+            font-style: italic;
+        }
+        .article-card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid py-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1><i class="fas fa-users-cog me-2"></i>Admin Dashboard</h1>
+                <p class="text-muted">View all user data and system statistics</p>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <h3><i class="fas fa-users me-2"></i>{{ total_users }}</h3>
+                    <p class="mb-0">Total Users</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <h3><i class="fas fa-heart me-2"></i>{{ users_with_preferences }}</h3>
+                    <p class="mb-0">Users with Preferences</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <h3><i class="fas fa-newspaper me-2"></i>{{ total_articles }}</h3>
+                    <p class="mb-0">Total Articles</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab">
+                            <i class="fas fa-users me-2"></i>Users ({{ total_users }})
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="articles-tab" data-bs-toggle="tab" data-bs-target="#articles" type="button" role="tab">
+                            <i class="fas fa-newspaper me-2"></i>Articles ({{ total_articles }})
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="raw-data-tab" data-bs-toggle="tab" data-bs-target="#raw-data" type="button" role="tab">
+                            <i class="fas fa-code me-2"></i>Raw Data
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="adminTabsContent">
+            <!-- Users Tab -->
+            <div class="tab-pane fade show active" id="users" role="tabpanel">
+                <div class="row">
+                    {% for user_id, user in users.items() %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="user-card">
+                            <h5><i class="fas fa-user me-2"></i>{{ user.name }}</h5>
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-phone me-1"></i>{{ user.phone }}
+                            </p>
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-calendar me-1"></i>{{ user.created_at[:10] }}
+                            </p>
+                            
+                            <div class="mb-2">
+                                <strong>Preferences:</strong>
+                                {% if user.preferences %}
+                                    {% for pref in user.preferences %}
+                                        <span class="preferences-badge">{{ pref }}</span>
+                                    {% endfor %}
+                                {% else %}
+                                    <span class="no-preferences">No preferences set</span>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="row text-center">
+                                <div class="col-6">
+                                    <small class="text-muted">Liked Topics</small><br>
+                                    <strong>{{ user.liked_topics|length }}</strong>
+                                </div>
+                                <div class="col-6">
+                                    <small class="text-muted">Passed Topics</small><br>
+                                    <strong>{{ user.passed_topics|length }}</strong>
+                                </div>
+                            </div>
+                            
+                            <small class="text-muted">ID: {{ user_id[:8] }}...</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Articles Tab -->
+            <div class="tab-pane fade" id="articles" role="tabpanel">
+                <div class="row">
+                    {% for article_id, article in articles.items() %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="article-card">
+                            <h6><i class="fas fa-newspaper me-2"></i>Article {{ article_id[:8] }}...</h6>
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <i class="fas fa-heart text-danger"></i><br>
+                                    <strong>{{ article.likes }}</strong><br>
+                                    <small>Likes</small>
+                                </div>
+                                <div class="col-4">
+                                    <i class="fas fa-thumbs-down text-warning"></i><br>
+                                    <strong>{{ article.dislikes }}</strong><br>
+                                    <small>Dislikes</small>
+                                </div>
+                                <div class="col-4">
+                                    <i class="fas fa-eye text-info"></i><br>
+                                    <strong>{{ article.views }}</strong><br>
+                                    <small>Views</small>
+                                </div>
+                            </div>
+                            <small class="text-muted">Created: {{ article.created_at[:10] }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Raw Data Tab -->
+            <div class="tab-pane fade" id="raw-data" role="tabpanel">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5><i class="fas fa-users me-2"></i>Users JSON</h5>
+                        <pre class="bg-light p-3" style="max-height: 400px; overflow-y: auto;"><code>{{ users | tojson(indent=2) }}</code></pre>
+                    </div>
+                    <div class="col-md-6">
+                        <h5><i class="fas fa-newspaper me-2"></i>Articles JSON</h5>
+                        <pre class="bg-light p-3" style="max-height: 400px; overflow-y: auto;"><code>{{ articles | tojson(indent=2) }}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to App -->
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <a href="/" class="btn btn-primary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to News App
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
