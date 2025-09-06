@@ -22,7 +22,7 @@ import time
 from dotenv import load_dotenv
 from security import security_manager
 
-print("All imports successful - Deployment version 1.2 - PORT BINDING FIX")
+print("All imports successful - Deployment version 1.3 - EXCEL EXPORT FIX")
 
 # Load environment variables from .env file
 load_dotenv()
