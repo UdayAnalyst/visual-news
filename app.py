@@ -511,9 +511,10 @@ def admin():
                          total_articles=total_articles)
 
 if __name__ == '__main__':
-    # Get host and port from environment variables, with defaults for local development
-    host = os.getenv('HOST', '127.0.0.1')
-    port = int(os.getenv('PORT', 8080))
-    debug = os.getenv('FLASK_DEBUG', 'True').lower() == 'true'
+    # Get host and port from environment variables, with defaults for production
+    host = os.getenv('HOST', '0.0.0.0')  # Changed default to 0.0.0.0 for Render
+    port = int(os.getenv('PORT', 10000))  # Render uses port 10000
+    debug = os.getenv('FLASK_DEBUG', 'False').lower() == 'true'  # Disable debug in production
     
+    print(f"Starting server on {host}:{port}")
     app.run(debug=debug, host=host, port=port)
