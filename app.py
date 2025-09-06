@@ -405,10 +405,9 @@ def logout():
     return redirect(url_for('login'))
 
 @app.route('/api/news')
-@require_auth
 @limiter.limit("30 per minute")
 def api_news():
-    """API endpoint to fetch news - requires authentication"""
+    """API endpoint to fetch news - no authentication required"""
     user_preferences = session.get('user_preferences', [])
     topics = request.args.getlist('topics')
     if not topics:
@@ -417,7 +416,8 @@ def api_news():
     num_articles = min(request.args.get('num_articles', 1, type=int), 50)  # Limit max articles
     
     if not topics:
-        return jsonify([{'error': 'No topics selected'}])
+        # If no topics provided and no user preferences, use default topics
+        topics = ['inflation', 'economy']
     
     if len(topics) == 1:
         articles = fetch_news_by_topic(topics[0], num_articles)
