@@ -327,10 +327,12 @@ def fetch_multi_topic_news(topics, num_articles_per_topic=1):
 
 @app.route('/')
 def index():
-    """Main page - redirect to login if not logged in"""
-    if not is_logged_in():
-        return redirect(url_for('login'))
-    return render_template('index.html')
+    """Main page - show news even if not logged in"""
+    if is_logged_in():
+        return render_template('index.html')
+    else:
+        # Show a public version with limited functionality
+        return render_template('public_index.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 @limiter.limit("5 per minute")
