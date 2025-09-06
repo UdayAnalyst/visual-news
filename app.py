@@ -45,6 +45,9 @@ except Exception as e:
     raise
 
 # Validate that required API keys are set
+print(f"DEBUG: OpenAI API key loaded: {openai.api_key[:10] if openai.api_key else 'None'}...")
+print(f"DEBUG: NewsAPI key loaded: {news_api_key[:10] if news_api_key else 'None'}...")
+
 if not openai.api_key:
     print("WARNING: OPENAI_API_KEY environment variable is not set")
     # Don't raise error for deployment, just use placeholder
@@ -231,9 +234,12 @@ def fetch_news_by_topic(topic, num_articles=1):
     """Fetch news articles for a specific topic"""
     try:
         # Check if we have a valid API key
+        print(f"DEBUG: Checking API key for {topic}: {news_api_key[:10] if news_api_key else 'None'}...")
         if news_api_key == "placeholder-key" or not news_api_key:
             print(f"WARNING: Using demo data for {topic} - API key not set")
             return get_demo_news_for_topic(topic, num_articles)
+        else:
+            print(f"DEBUG: Using real API key for {topic}")
         
         config = TOPIC_CONFIGS.get(topic, TOPIC_CONFIGS['inflation'])
         query = config['query']
