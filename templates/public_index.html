@@ -121,6 +121,7 @@
     <script>
         // Load news on page load
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, starting to load news...');
             loadNews();
         });
 
@@ -128,6 +129,18 @@
             // Load default news topics
             const topics = ['inflation', 'economy', 'technology'];
             console.log('Loading news for topics:', topics);
+            
+            let loadedCount = 0;
+            const totalTopics = topics.length;
+            
+            // Set a timeout to show demo content if nothing loads
+            setTimeout(() => {
+                const container = document.getElementById('news-container');
+                if (container.innerHTML.includes('Loading news...')) {
+                    console.log('Timeout reached, showing demo content');
+                    showDemoContent();
+                }
+            }, 5000);
             
             topics.forEach(topic => {
                 console.log(`Fetching news for topic: ${topic}`);
@@ -141,6 +154,7 @@
                     })
                     .then(data => {
                         console.log(`Data for ${topic}:`, data);
+                        loadedCount++;
                         if (data && data.length > 0) {
                             displayNews(data, topic);
                         } else {
@@ -149,6 +163,7 @@
                     })
                     .catch(error => {
                         console.error(`Error loading news for ${topic}:`, error);
+                        loadedCount++;
                         // Show error message to user
                         const container = document.getElementById('news-container');
                         container.innerHTML += `
@@ -162,15 +177,59 @@
                     });
             });
         }
+        
+        function showDemoContent() {
+            const container = document.getElementById('news-container');
+            container.innerHTML = `
+                <div class="col-md-4 mb-4">
+                    <div class="card news-card h-100">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGMzNTQ1Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkVjb25vbXkgTmV3czwvdGV4dD48L3N2Zz4=" 
+                             class="card-img-top" 
+                             alt="Economy News"
+                             style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">Demo Economy News</h5>
+                            <p class="card-text">This is a demo article showing that the site is working. In a real deployment, you would see actual news articles here.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Inflation</small>
+                                <small class="text-muted">Demo Source</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card news-card h-100">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDA3YmZmIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlRlY2ggTmV3czwvdGV4dD48L3N2Zz4=" 
+                             class="card-img-top" 
+                             alt="Tech News"
+                             style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">Demo Technology News</h5>
+                            <p class="card-text">This is a demo article showing that the site is working. In a real deployment, you would see actual news articles here.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Technology</small>
+                                <small class="text-muted">Demo Source</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
 
         function displayNews(articles, topic) {
+            console.log(`Displaying ${articles.length} articles for topic: ${topic}`);
             const container = document.getElementById('news-container');
+            
+            // Clear loading spinner
+            container.innerHTML = '';
             
             articles.forEach(article => {
                 if (article.error) {
+                    console.log('Skipping error article:', article.error);
                     return; // Skip error articles
                 }
                 
+                console.log('Creating card for article:', article.title);
                 const newsCard = document.createElement('div');
                 newsCard.className = 'col-md-4 mb-4';
                 newsCard.innerHTML = `
