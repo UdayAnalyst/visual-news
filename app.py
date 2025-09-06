@@ -145,6 +145,27 @@ def load_users_from_json():
         print(f"Error loading users from JSON: {e}")
         return {}
 
+def load_all_users_for_admin():
+    """Load all users from both encrypted and unencrypted files for admin display"""
+    try:
+        # Load users from both sources
+        encrypted_users = security_manager.load_users()
+        unencrypted_users = load_users_from_json()
+        
+        # Merge both user dictionaries
+        all_users = {}
+        all_users.update(unencrypted_users)  # Add unencrypted users first
+        all_users.update(encrypted_users)    # Add encrypted users (will overwrite duplicates)
+        
+        print(f"DEBUG: Admin loaded {len(unencrypted_users)} unencrypted users")
+        print(f"DEBUG: Admin loaded {len(encrypted_users)} encrypted users")
+        print(f"DEBUG: Total users for admin: {len(all_users)}")
+        
+        return all_users
+    except Exception as e:
+        print(f"Error loading all users for admin: {e}")
+        return {}
+
 def save_users(users):
     """Save users to secure storage"""
     return security_manager.save_users(users)
@@ -566,12 +587,12 @@ def admin():
     if not session.get('admin_logged_in'):
         return redirect(url_for('admin_login'))
     
-    # Load users from the encrypted file (where new users are actually saved)
-    users = security_manager.load_users()
+    # Load users from both encrypted and unencrypted files
+    users = load_all_users_for_admin()
     articles = load_articles()
     
     # Debug: Print user count
-    print(f"DEBUG: Admin loaded {len(users)} users from encrypted file")
+    print(f"DEBUG: Admin loaded {len(users)} total users")
     print(f"DEBUG: Users data: {list(users.keys()) if users else 'No users'}")
     
     # Calculate some statistics
@@ -620,8 +641,8 @@ def export_users_csv():
         return redirect(url_for('admin_login'))
     
     try:
-        # Load users data from encrypted file
-        users = security_manager.load_users()
+        # Load users data from both sources
+        users = load_all_users_for_admin()
         
         if not users:
             return jsonify({'error': 'No user data available'}), 404
@@ -671,8 +692,8 @@ def export_users_excel():
         return redirect(url_for('admin_login'))
     
     try:
-        # Load users data from encrypted file
-        users = security_manager.load_users()
+        # Load users data from both sources
+        users = load_all_users_for_admin()
         
         if not users:
             return jsonify({'error': 'No user data available'}), 404
