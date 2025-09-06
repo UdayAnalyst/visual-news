@@ -310,7 +310,9 @@ def fetch_news_by_topic(topic, num_articles=1):
         return processed_articles
     
     except Exception as e:
-        return [{'error': f"Error fetching {topic} news: {str(e)}"}]
+        print(f"ERROR: Failed to fetch {topic} news: {str(e)}")
+        print(f"Falling back to demo data for {topic}")
+        return get_demo_news_for_topic(topic, num_articles)
 
 def fetch_multi_topic_news(topics, num_articles_per_topic=1):
     """Fetch news from multiple topics and sort by popularity"""
