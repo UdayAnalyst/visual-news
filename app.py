@@ -651,6 +651,54 @@ def export_users_excel():
         print(f"Error exporting to Excel: {e}")
         return jsonify({'error': f'Failed to export data: {str(e)}'}), 500
 
+@app.route('/admin/export/csv')
+def export_users_csv():
+    """Export user data to CSV file (backup option)"""
+    try:
+        # Load users data
+        users = load_users_from_json()
+        
+        if not users:
+            return jsonify({'error': 'No user data available'}), 404
+        
+        # Prepare data for CSV
+        csv_data = []
+        for user_id, user_data in users.items():
+            csv_data.append({
+                'User ID': user_id,
+                'Name': user_data.get('name', 'N/A'),
+                'Phone': user_data.get('phone', 'N/A'),
+                'Email': user_data.get('email', 'N/A'),
+                'Created At': user_data.get('created_at', 'N/A'),
+                'Preferences': ', '.join(user_data.get('preferences', [])) if user_data.get('preferences') else 'None',
+                'Liked Topics Count': len(user_data.get('liked_topics', {})),
+                'Passed Topics Count': len(user_data.get('passed_topics', {})),
+                'Total Engagements': len(user_data.get('liked_topics', {})) + len(user_data.get('passed_topics', {}))
+            })
+        
+        # Create CSV content
+        import csv
+        output = io.StringIO()
+        fieldnames = ['User ID', 'Name', 'Phone', 'Email', 'Created At', 'Preferences', 'Liked Topics Count', 'Passed Topics Count', 'Total Engagements']
+        writer = csv.DictWriter(output, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(csv_data)
+        
+        # Generate filename with timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"visual_news_users_{timestamp}.csv"
+        
+        return send_file(
+            io.BytesIO(output.getvalue().encode('utf-8')),
+            as_attachment=True,
+            download_name=filename,
+            mimetype='text/csv'
+        )
+        
+    except Exception as e:
+        print(f"Error exporting to CSV: {e}")
+        return jsonify({'error': f'Failed to export data: {str(e)}'}), 500
+
 if __name__ == '__main__':
     # Get host and port from environment variables, with defaults for production
     host = os.getenv('HOST', '0.0.0.0')  # Changed default to 0.0.0.0 for Render
