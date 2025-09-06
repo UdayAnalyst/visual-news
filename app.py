@@ -71,56 +71,56 @@ TOPIC_CONFIGS = {
         'icon': 'fas fa-chart-line',
         'color': 'text-danger',
         'name': 'Inflation & Economy',
-        'placeholder': 'https://via.placeholder.com/400x300/dc3545/ffffff?text=Economy+News'
+        'placeholder': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGMzNTQ1Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkVjb25vbXkgTmV3czwvdGV4dD48L3N2Zz4='
     },
     'technology': {
         'query': 'technology AI artificial intelligence',
         'icon': 'fas fa-microchip',
         'color': 'text-primary',
         'name': 'Technology',
-        'placeholder': 'https://via.placeholder.com/400x300/007bff/ffffff?text=Tech+News'
+        'placeholder': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDA3YmZmIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlRlY2ggTmV3czwvdGV4dD48L3N2Zz4='
     },
     'politics': {
         'query': 'politics government election',
         'icon': 'fas fa-landmark',
         'color': 'text-warning',
         'name': 'Politics',
-        'placeholder': 'https://via.placeholder.com/400x300/ffc107/000000?text=Politics+News'
+        'placeholder': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmZjMTA3Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzAwMDAwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlBvbGl0aWNzIE5ld3M8L3RleHQ+PC9zdmc+'
     },
     'health': {
         'query': 'health medicine healthcare',
         'icon': 'fas fa-heartbeat',
         'color': 'text-success',
         'name': 'Health & Medicine',
-        'placeholder': 'https://via.placeholder.com/400x300/28a745/ffffff?text=Health+News'
+        'placeholder': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMjhhNzQ1Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkhlYWx0aCBOZXdzPC90ZXh0Pjwvc3ZnPg=='
     },
     'business': {
         'query': 'business finance market',
         'icon': 'fas fa-briefcase',
         'color': 'text-info',
         'name': 'Business',
-        'placeholder': 'https://via.placeholder.com/400x300/17a2b8/ffffff?text=Business+News'
+        'placeholder': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMTdhMmI4Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkJ1c2luZXNzIE5ld3M8L3RleHQ+PC9zdmc+'
     },
     'science': {
         'query': 'science research discovery',
         'icon': 'fas fa-flask',
         'color': 'text-purple',
         'name': 'Science',
-        'placeholder': 'https://via.placeholder.com/400x300/6f42c1/ffffff?text=Science+News'
+        'placeholder': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNmY0MmMxIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlNjaWVuY2UgTmV3czwvdGV4dD48L3N2Zz4='
     },
     'sports': {
         'query': 'sports football basketball',
         'icon': 'fas fa-football-ball',
         'color': 'text-orange',
         'name': 'Sports',
-        'placeholder': 'https://via.placeholder.com/400x300/fd7e14/ffffff?text=Sports+News'
+        'placeholder': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmQ3ZTE0Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlNwb3J0cyBOZXdzPC90ZXh0Pjwvc3ZnPg=='
     },
     'environment': {
         'query': 'environment climate global warming',
         'icon': 'fas fa-leaf',
         'color': 'text-green',
         'name': 'Environment',
-        'placeholder': 'https://via.placeholder.com/400x300/20c997/ffffff?text=Environment+News'
+        'placeholder': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMjBjOTk3Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkVudmlyb25tZW50IE5ld3M8L3RleHQ+PC9zdmc+'
     }
 }
 
