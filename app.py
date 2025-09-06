@@ -71,56 +71,56 @@ TOPIC_CONFIGS = {
         'icon': 'fas fa-chart-line',
         'color': 'text-danger',
         'name': 'Inflation & Economy',
-        'placeholder': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=300&fit=crop&crop=center'
+        'placeholder': 'https://picsum.photos/400/300?random=1'
     },
     'technology': {
         'query': 'technology AI artificial intelligence',
         'icon': 'fas fa-microchip',
         'color': 'text-primary',
         'name': 'Technology',
-        'placeholder': 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop&crop=center'
+        'placeholder': 'https://picsum.photos/400/300?random=2'
     },
     'politics': {
         'query': 'politics government election',
         'icon': 'fas fa-landmark',
         'color': 'text-warning',
         'name': 'Politics',
-        'placeholder': 'https://images.unsplash.com/photo-1529107386315-e1a2ed48ab78?w=400&h=300&fit=crop&crop=center'
+        'placeholder': 'https://picsum.photos/400/300?random=3'
     },
     'health': {
         'query': 'health medicine healthcare',
         'icon': 'fas fa-heartbeat',
         'color': 'text-success',
         'name': 'Health & Medicine',
-        'placeholder': 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=300&fit=crop&crop=center'
+        'placeholder': 'https://picsum.photos/400/300?random=4'
     },
     'business': {
         'query': 'business finance market',
         'icon': 'fas fa-briefcase',
         'color': 'text-info',
         'name': 'Business',
-        'placeholder': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop&crop=center'
+        'placeholder': 'https://picsum.photos/400/300?random=5'
     },
     'science': {
         'query': 'science research discovery',
         'icon': 'fas fa-flask',
         'color': 'text-purple',
         'name': 'Science',
-        'placeholder': 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=400&h=300&fit=crop&crop=center'
+        'placeholder': 'https://picsum.photos/400/300?random=6'
     },
     'sports': {
         'query': 'sports football basketball',
         'icon': 'fas fa-football-ball',
         'color': 'text-orange',
         'name': 'Sports',
-        'placeholder': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&crop=center'
+        'placeholder': 'https://picsum.photos/400/300?random=7'
     },
     'environment': {
         'query': 'environment climate global warming',
         'icon': 'fas fa-leaf',
         'color': 'text-green',
         'name': 'Environment',
-        'placeholder': 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop&crop=center'
+        'placeholder': 'https://picsum.photos/400/300?random=8'
     }
 }
 

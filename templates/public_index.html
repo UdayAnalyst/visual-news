@@ -128,6 +128,11 @@
                 newsCard.className = 'col-md-4 mb-4';
                 newsCard.innerHTML = `
                     <div class="card news-card h-100">
+                        <img src="${article.image_url || 'https://picsum.photos/400/300?random=' + Math.floor(Math.random() * 1000)}" 
+                             class="card-img-top" 
+                             alt="${article.title || 'News image'}"
+                             style="height: 200px; object-fit: cover;"
+                             onerror="this.src='https://picsum.photos/400/300?random=' + Math.floor(Math.random() * 1000)">
                         <div class="card-body">
                             <h5 class="card-title">${article.title || 'No title'}</h5>
                             <p class="card-text">${article.summary || article.description || 'No summary available'}</p>
