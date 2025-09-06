@@ -71,56 +71,56 @@ TOPIC_CONFIGS = {
         'icon': 'fas fa-chart-line',
         'color': 'text-danger',
         'name': 'Inflation & Economy',
-        'placeholder': 'https://picsum.photos/400/300?random=1'
+        'placeholder': 'https://via.placeholder.com/400x300/dc3545/ffffff?text=Economy+News'
     },
     'technology': {
         'query': 'technology AI artificial intelligence',
         'icon': 'fas fa-microchip',
         'color': 'text-primary',
         'name': 'Technology',
-        'placeholder': 'https://picsum.photos/400/300?random=2'
+        'placeholder': 'https://via.placeholder.com/400x300/007bff/ffffff?text=Tech+News'
     },
     'politics': {
         'query': 'politics government election',
         'icon': 'fas fa-landmark',
         'color': 'text-warning',
         'name': 'Politics',
-        'placeholder': 'https://picsum.photos/400/300?random=3'
+        'placeholder': 'https://via.placeholder.com/400x300/ffc107/000000?text=Politics+News'
     },
     'health': {
         'query': 'health medicine healthcare',
         'icon': 'fas fa-heartbeat',
         'color': 'text-success',
         'name': 'Health & Medicine',
-        'placeholder': 'https://picsum.photos/400/300?random=4'
+        'placeholder': 'https://via.placeholder.com/400x300/28a745/ffffff?text=Health+News'
     },
     'business': {
         'query': 'business finance market',
         'icon': 'fas fa-briefcase',
         'color': 'text-info',
         'name': 'Business',
-        'placeholder': 'https://picsum.photos/400/300?random=5'
+        'placeholder': 'https://via.placeholder.com/400x300/17a2b8/ffffff?text=Business+News'
     },
     'science': {
         'query': 'science research discovery',
         'icon': 'fas fa-flask',
         'color': 'text-purple',
         'name': 'Science',
-        'placeholder': 'https://picsum.photos/400/300?random=6'
+        'placeholder': 'https://via.placeholder.com/400x300/6f42c1/ffffff?text=Science+News'
     },
     'sports': {
         'query': 'sports football basketball',
         'icon': 'fas fa-football-ball',
         'color': 'text-orange',
         'name': 'Sports',
-        'placeholder': 'https://picsum.photos/400/300?random=7'
+        'placeholder': 'https://via.placeholder.com/400x300/fd7e14/ffffff?text=Sports+News'
     },
     'environment': {
         'query': 'environment climate global warming',
         'icon': 'fas fa-leaf',
         'color': 'text-green',
         'name': 'Environment',
-        'placeholder': 'https://picsum.photos/400/300?random=8'
+        'placeholder': 'https://via.placeholder.com/400x300/20c997/ffffff?text=Environment+News'
     }
 }
 
@@ -328,8 +328,10 @@ def fetch_news_by_topic(topic, num_articles=1):
                 url_to_image.startswith(('http://', 'https://')) and
                 any(ext in url_to_image.lower() for ext in ['.jpg', '.jpeg', '.png', '.gif', '.webp'])):
                 image_url = url_to_image
+                print(f"DEBUG: Using real image for {topic}: {image_url[:50]}...")
             else:
                 image_url = get_news_image(topic)
+                print(f"DEBUG: Using placeholder image for {topic}: {image_url}")
             
             # Create quick notes
             quick_notes = create_quick_notes(description)
@@ -357,7 +359,7 @@ def fetch_news_by_topic(topic, num_articles=1):
     
     except Exception as e:
         print(f"ERROR: Failed to fetch {topic} news: {str(e)}")
-        print(f"Falling back to demo data for {topic}")
+        print(f"DEBUG: Falling back to demo data for {topic}")
         return get_demo_news_for_topic(topic, num_articles)
 
 def fetch_multi_topic_news(topics, num_articles_per_topic=1):

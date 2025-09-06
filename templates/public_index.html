@@ -175,11 +175,11 @@
                 newsCard.className = 'col-md-4 mb-4';
                 newsCard.innerHTML = `
                     <div class="card news-card h-100">
-                        <img src="${article.image_url || 'https://picsum.photos/400/300?random=' + Math.floor(Math.random() * 1000)}" 
+                        <img src="${article.image_url || 'https://via.placeholder.com/400x300/007bff/ffffff?text=News+Image'}" 
                              class="card-img-top" 
                              alt="${article.title || 'News image'}"
                              loading="lazy"
-                             onerror="this.src='https://picsum.photos/400/300?random=' + Math.floor(Math.random() * 1000); this.onerror=null;"
+                             onerror="this.src='https://via.placeholder.com/400x300/28a745/ffffff?text=News+Image'; this.onerror=null;"
                              onload="this.style.opacity='1'"
                              style="height: 200px; object-fit: cover; opacity: 0; transition: opacity 0.3s ease;">
                         <div class="card-body">
