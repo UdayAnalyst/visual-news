@@ -131,9 +131,15 @@ def load_users():
 def load_users_from_json():
     """Load users from regular JSON file for admin display"""
     try:
+        print(f"DEBUG: Checking for users.json file...")
         if os.path.exists('users.json'):
+            print(f"DEBUG: users.json file exists, loading...")
             with open('users.json', 'r') as f:
-                return json.load(f)
+                users = json.load(f)
+                print(f"DEBUG: Loaded {len(users)} users from JSON")
+                return users
+        else:
+            print(f"DEBUG: users.json file does not exist")
         return {}
     except Exception as e:
         print(f"Error loading users from JSON: {e}")
@@ -559,6 +565,10 @@ def admin():
     # Load users from the actual users.json file (not encrypted)
     users = load_users_from_json()
     articles = load_articles()
+    
+    # Debug: Print user count
+    print(f"DEBUG: Admin loaded {len(users)} users")
+    print(f"DEBUG: Users data: {list(users.keys()) if users else 'No users'}")
     
     # Calculate some statistics
     total_users = len(users)
