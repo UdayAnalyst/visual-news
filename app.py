@@ -2,7 +2,7 @@ import sys
 print(f"Python version: {sys.version}")
 print(f"Python executable: {sys.executable}")
 
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash, send_file
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import requests
@@ -13,6 +13,8 @@ from datetime import datetime, timedelta
 import random
 import uuid
 import hashlib
+import pandas as pd
+import io
 import base64
 from io import BytesIO
 import threading
@@ -581,6 +583,73 @@ def admin():
                          total_users=total_users,
                          users_with_preferences=users_with_preferences,
                          total_articles=total_articles)
+
+@app.route('/admin/export/excel')
+def export_users_excel():
+    """Export user data to Excel file"""
+    try:
+        # Load users data
+        users = load_users_from_json()
+        
+        if not users:
+            return jsonify({'error': 'No user data available'}), 404
+        
+        # Prepare data for Excel
+        excel_data = []
+        for user_id, user_data in users.items():
+            excel_data.append({
+                'User ID': user_id,
+                'Name': user_data.get('name', 'N/A'),
+                'Phone': user_data.get('phone', 'N/A'),
+                'Email': user_data.get('email', 'N/A'),
+                'Created At': user_data.get('created_at', 'N/A'),
+                'Preferences': ', '.join(user_data.get('preferences', [])) if user_data.get('preferences') else 'None',
+                'Liked Topics Count': len(user_data.get('liked_topics', {})),
+                'Passed Topics Count': len(user_data.get('passed_topics', {})),
+                'Total Engagements': len(user_data.get('liked_topics', {})) + len(user_data.get('passed_topics', {}))
+            })
+        
+        # Create DataFrame
+        df = pd.DataFrame(excel_data)
+        
+        # Create Excel file in memory
+        output = io.BytesIO()
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            df.to_excel(writer, sheet_name='Users Data', index=False)
+            
+            # Get the workbook and worksheet
+            workbook = writer.book
+            worksheet = writer.sheets['Users Data']
+            
+            # Auto-adjust column widths
+            for column in worksheet.columns:
+                max_length = 0
+                column_letter = column[0].column_letter
+                for cell in column:
+                    try:
+                        if len(str(cell.value)) > max_length:
+                            max_length = len(str(cell.value))
+                    except:
+                        pass
+                adjusted_width = min(max_length + 2, 50)
+                worksheet.column_dimensions[column_letter].width = adjusted_width
+        
+        output.seek(0)
+        
+        # Generate filename with timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"visual_news_users_{timestamp}.xlsx"
+        
+        return send_file(
+            output,
+            as_attachment=True,
+            download_name=filename,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        
+    except Exception as e:
+        print(f"Error exporting to Excel: {e}")
+        return jsonify({'error': f'Failed to export data: {str(e)}'}), 500
 
 if __name__ == '__main__':
     # Get host and port from environment variables, with defaults for production
