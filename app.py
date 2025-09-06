@@ -566,12 +566,12 @@ def admin():
     if not session.get('admin_logged_in'):
         return redirect(url_for('admin_login'))
     
-    # Load users from the actual users.json file (not encrypted)
-    users = load_users_from_json()
+    # Load users from the encrypted file (where new users are actually saved)
+    users = security_manager.load_users()
     articles = load_articles()
     
     # Debug: Print user count
-    print(f"DEBUG: Admin loaded {len(users)} users")
+    print(f"DEBUG: Admin loaded {len(users)} users from encrypted file")
     print(f"DEBUG: Users data: {list(users.keys()) if users else 'No users'}")
     
     # Calculate some statistics
@@ -620,8 +620,8 @@ def export_users_csv():
         return redirect(url_for('admin_login'))
     
     try:
-        # Load users data
-        users = load_users_from_json()
+        # Load users data from encrypted file
+        users = security_manager.load_users()
         
         if not users:
             return jsonify({'error': 'No user data available'}), 404
@@ -671,8 +671,8 @@ def export_users_excel():
         return redirect(url_for('admin_login'))
     
     try:
-        # Load users data
-        users = load_users_from_json()
+        # Load users data from encrypted file
+        users = security_manager.load_users()
         
         if not users:
             return jsonify({'error': 'No user data available'}), 404
