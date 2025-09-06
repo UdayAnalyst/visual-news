@@ -1,0 +1,39 @@
+{
+  "23ea4b01-1ef7-4d25-845c-96abef20c3b0": {
+    "name": "uday pandey",
+    "phone": "9977499459",
+    "created_at": "2025-09-05T16:17:28.943648",
+    "liked_topics": {},
+    "passed_topics": {}
+  },
+  "1021eb60-3318-449b-88f9-a78b62e51833": {
+    "name": "pikaj",
+    "phone": "(860) 706-6872",
+    "preferences": [
+      "business"
+    ],
+    "created_at": "2025-09-05T17:01:38.396173",
+    "liked_topics": {},
+    "passed_topics": {}
+  },
+  "ed9a0b3d-37a1-46d4-8455-0f53ebda11e6": {
+    "name": "sindhu",
+    "phone": "774646383634763",
+    "preferences": [
+      "sports"
+    ],
+    "created_at": "2025-09-05T17:16:25.828490",
+    "liked_topics": {},
+    "passed_topics": {}
+  },
+  "a9512836-31db-4125-999d-d4300351c40e": {
+    "name": "navdisha batra",
+    "phone": "999999887765",
+    "preferences": [
+      "inflation"
+    ],
+    "created_at": "2025-09-05T17:31:36.897322",
+    "liked_topics": {},
+    "passed_topics": {}
+  }
+}
