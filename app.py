@@ -200,9 +200,41 @@ def create_quick_notes(text):
     
     return '\n'.join(quick_notes)
 
+def get_demo_news_for_topic(topic, num_articles=1):
+    """Get demo news articles when API key is not available"""
+    config = TOPIC_CONFIGS.get(topic, TOPIC_CONFIGS['inflation'])
+    
+    demo_articles = []
+    for i in range(num_articles):
+        demo_articles.append({
+            'id': f"demo_{topic}_{i+1}",
+            'title': f"Demo {config['name']} News Article {i+1}",
+            'description': f"This is a demo article about {topic}. In a real deployment, you would see actual news articles here when you add your NewsAPI key to the environment variables.",
+            'summary': f"• Demo article about {topic}\n• This shows the app is working\n• Add your NewsAPI key to see real news",
+            'url': f"https://example.com/demo-{topic}-{i+1}",
+            'published_at': "Demo Date",
+            'source': "Demo Source",
+            'topic': topic,
+            'topic_name': config['name'],
+            'topic_icon': config['icon'],
+            'topic_color': config['color'],
+            'likes': 0,
+            'dislikes': 0,
+            'views': 0,
+            'image_url': config['placeholder'],
+            'is_generated': False
+        })
+    
+    return demo_articles
+
 def fetch_news_by_topic(topic, num_articles=1):
     """Fetch news articles for a specific topic"""
     try:
+        # Check if we have a valid API key
+        if news_api_key == "placeholder-key" or not news_api_key:
+            print(f"WARNING: Using demo data for {topic} - API key not set")
+            return get_demo_news_for_topic(topic, num_articles)
+        
         config = TOPIC_CONFIGS.get(topic, TOPIC_CONFIGS['inflation'])
         query = config['query']
         
