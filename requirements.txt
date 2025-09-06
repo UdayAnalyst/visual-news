@@ -7,5 +7,3 @@ flask-wtf==1.2.1
 wtforms==3.1.0
 cryptography==41.0.7
 bcrypt==4.1.2
-pandas==2.0.3
-openpyxl==3.1.2

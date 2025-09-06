@@ -13,8 +13,6 @@ from datetime import datetime, timedelta
 import random
 import uuid
 import hashlib
-import pandas as pd
-import io
 import base64
 from io import BytesIO
 import threading
@@ -668,7 +666,7 @@ def export_users_csv():
 
 @app.route('/admin/export/excel')
 def export_users_excel():
-    """Export user data to Excel file - requires admin authentication"""
+    """Export user data to Excel-compatible CSV file - requires admin authentication"""
     if not session.get('admin_logged_in'):
         return redirect(url_for('admin_login'))
     
@@ -679,10 +677,10 @@ def export_users_excel():
         if not users:
             return jsonify({'error': 'No user data available'}), 404
         
-        # Prepare data for Excel
-        excel_data = []
+        # Prepare data for Excel-compatible CSV
+        csv_data = []
         for user_id, user_data in users.items():
-            excel_data.append({
+            csv_data.append({
                 'User ID': user_id,
                 'Name': user_data.get('name', 'N/A'),
                 'Phone': user_data.get('phone', 'N/A'),
@@ -694,42 +692,23 @@ def export_users_excel():
                 'Total Engagements': len(user_data.get('liked_topics', {})) + len(user_data.get('passed_topics', {}))
             })
         
-        # Create DataFrame
-        df = pd.DataFrame(excel_data)
-        
-        # Create Excel file in memory
-        output = io.BytesIO()
-        with pd.ExcelWriter(output, engine='openpyxl') as writer:
-            df.to_excel(writer, sheet_name='Users Data', index=False)
-            
-            # Get the workbook and worksheet
-            workbook = writer.book
-            worksheet = writer.sheets['Users Data']
-            
-            # Auto-adjust column widths
-            for column in worksheet.columns:
-                max_length = 0
-                column_letter = column[0].column_letter
-                for cell in column:
-                    try:
-                        if len(str(cell.value)) > max_length:
-                            max_length = len(str(cell.value))
-                    except:
-                        pass
-                adjusted_width = min(max_length + 2, 50)
-                worksheet.column_dimensions[column_letter].width = adjusted_width
-        
-        output.seek(0)
+        # Create CSV content
+        import csv
+        output = io.StringIO()
+        fieldnames = ['User ID', 'Name', 'Phone', 'Email', 'Created At', 'Preferences', 'Liked Topics Count', 'Passed Topics Count', 'Total Engagements']
+        writer = csv.DictWriter(output, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(csv_data)
         
         # Generate filename with timestamp
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"visual_news_users_{timestamp}.xlsx"
+        filename = f"visual_news_users_{timestamp}.csv"
         
         return send_file(
-            output,
+            io.BytesIO(output.getvalue().encode('utf-8')),
             as_attachment=True,
             download_name=filename,
-            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            mimetype='text/csv'
         )
         
     except Exception as e:
