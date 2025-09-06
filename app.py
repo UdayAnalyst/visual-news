@@ -20,7 +20,7 @@ import time
 from dotenv import load_dotenv
 from security import security_manager
 
-print("All imports successful - Deployment version 1.1")
+print("All imports successful - Deployment version 1.2 - PORT BINDING FIX")
 
 # Load environment variables from .env file
 load_dotenv()
@@ -517,4 +517,5 @@ if __name__ == '__main__':
     debug = os.getenv('FLASK_DEBUG', 'False').lower() == 'true'  # Disable debug in production
     
     print(f"Starting server on {host}:{port}")
+    print(f"Host binding: {host} (should be 0.0.0.0 for Render)")
     app.run(debug=debug, host=host, port=port)
