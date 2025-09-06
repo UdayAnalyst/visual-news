@@ -382,6 +382,16 @@ def index():
         # Show a public version with limited functionality
         return render_template('public_index.html')
 
+@app.route('/robots.txt')
+def robots_txt():
+    """Serve robots.txt file"""
+    return send_from_directory(app.static_folder, 'robots.txt')
+
+@app.route('/sitemap.xml')
+def sitemap_xml():
+    """Serve sitemap.xml file"""
+    return send_from_directory(app.static_folder, 'sitemap.xml')
+
 @app.route('/signup', methods=['GET', 'POST'])
 @limiter.limit("5 per minute")
 def signup():

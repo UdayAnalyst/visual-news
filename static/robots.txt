@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /static/js/
+Disallow: /static/css/
+
+Sitemap: https://visual-news.onrender.com/sitemap.xml
