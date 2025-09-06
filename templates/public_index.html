@@ -183,7 +183,7 @@
             container.innerHTML = `
                 <div class="col-md-4 mb-4">
                     <div class="card news-card h-100">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGMzNTQ1Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkVjb25vbXkgTmV3czwvdGV4dD48L3N2Zz4=" 
+                        <img src="data:image/svg+xml;charset=utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"300\"><rect width=\"100%\" height=\"100%\" fill=\"%23dc3545\"/><text x=\"50%\" y=\"50%\" font-family=\"Arial\" font-size=\"24\" fill=\"white\" text-anchor=\"middle\" dy=\".3em\">Economy News</text></svg>" 
                              class="card-img-top" 
                              alt="Economy News"
                              style="height: 200px; object-fit: cover;">
@@ -199,7 +199,7 @@
                 </div>
                 <div class="col-md-4 mb-4">
                     <div class="card news-card h-100">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDA3YmZmIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlRlY2ggTmV3czwvdGV4dD48L3N2Zz4=" 
+                        <img src="data:image/svg+xml;charset=utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"300\"><rect width=\"100%\" height=\"100%\" fill=\"%23007bff\"/><text x=\"50%\" y=\"50%\" font-family=\"Arial\" font-size=\"24\" fill=\"white\" text-anchor=\"middle\" dy=\".3em\">Tech News</text></svg>" 
                              class="card-img-top" 
                              alt="Tech News"
                              style="height: 200px; object-fit: cover;">
@@ -234,11 +234,11 @@
                 newsCard.className = 'col-md-4 mb-4';
                 newsCard.innerHTML = `
                     <div class="card news-card h-100">
-                        <img src="${article.image_url || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDA3YmZmIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5ld3MgSW1hZ2U8L3RleHQ+PC9zdmc+'}" 
+                        <img src="${article.image_url || 'data:image/svg+xml;charset=utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"300\"><rect width=\"100%\" height=\"100%\" fill=\"%23007bff\"/><text x=\"50%\" y=\"50%\" font-family=\"Arial\" font-size=\"24\" fill=\"white\" text-anchor=\"middle\" dy=\".3em\">News Image</text></svg>'}" 
                              class="card-img-top" 
                              alt="${article.title || 'News image'}"
                              loading="lazy"
-                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMjhhNzQ1Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5ld3MgSW1hZ2U8L3RleHQ+PC9zdmc+'; this.onerror=null;"
+                             onerror="this.src='data:image/svg+xml;charset=utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"300\"><rect width=\"100%\" height=\"100%\" fill=\"%2328a745\"/><text x=\"50%\" y=\"50%\" font-family=\"Arial\" font-size=\"24\" fill=\"white\" text-anchor=\"middle\" dy=\".3em\">News Image</text></svg>'; this.onerror=null;"
                              onload="this.style.opacity='1'"
                              style="height: 200px; object-fit: cover; opacity: 0; transition: opacity 0.3s ease;">
                         <div class="card-body">

@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
         newsCard.innerHTML = `
             <div class="card-content">
                 <div class="news-image">
-                    <img src="${article.image_url}" alt="${article.title}" 
+                    <img src="${article.image_url || getDefaultImage(article.topic)}" alt="${article.title}" 
                          onload="handleImageLoad(this)" 
                          onerror="handleImageError(this)"
                          style="opacity: 0; transition: opacity 0.3s ease;">
@@ -312,14 +312,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function handleImageError(img) {
-        const container = img.parentElement;
-        container.innerHTML = `
-            <div class="image-placeholder">
-                <i class="fas fa-image fa-3x mb-3"></i>
-                <p>Image unavailable</p>
-                <small class="text-muted">Visual representation could not be loaded</small>
-            </div>
-        `;
+        console.log('Image failed to load, using fallback');
+        // Create a simple colored placeholder based on topic
+        const article = currentNews[currentIndex];
+        const topicConfig = getTopicConfig(article.topic);
+        const color = topicConfig.color.replace('text-', '').replace('danger', 'dc3545').replace('primary', '007bff').replace('warning', 'ffc107').replace('success', '28a745').replace('info', '17a2b8').replace('purple', '6f42c1').replace('orange', 'fd7e14').replace('green', '20c997');
+        
+        img.src = `data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="100%" height="100%" fill="%23${color}"/><text x="50%" y="50%" font-family="Arial" font-size="24" fill="white" text-anchor="middle" dy=".3em">${topicConfig.name}</text></svg>`;
+        img.style.opacity = '1';
     }
 
     function handleArticleEngagement(articleId, action) {
@@ -490,6 +490,12 @@ document.addEventListener('DOMContentLoaded', function() {
             'environment': { icon: 'fas fa-leaf', color: 'text-green', name: 'Environment' }
         };
         return configs[topic] || configs['inflation'];
+    }
+
+    function getDefaultImage(topic) {
+        const topicConfig = getTopicConfig(topic);
+        const color = topicConfig.color.replace('text-', '').replace('danger', 'dc3545').replace('primary', '007bff').replace('warning', 'ffc107').replace('success', '28a745').replace('info', '17a2b8').replace('purple', '6f42c1').replace('orange', 'fd7e14').replace('green', '20c997');
+        return `data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="100%" height="100%" fill="%23${color}"/><text x="50%" y="50%" font-family="Arial" font-size="24" fill="white" text-anchor="middle" dy=".3em">${topicConfig.name}</text></svg>`;
     }
 
     // Global functions
