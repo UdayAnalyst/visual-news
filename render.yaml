@@ -5,16 +5,20 @@ services:
     plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: python app.py
-    envVars:
-      - key: OPENAI_API_KEY
-        sync: false
-      - key: NEWS_API_KEY
-        sync: false
-      - key: FLASK_SECRET_KEY
-        generateValue: true
-      - key: HOST
-        value: "0.0.0.0"
-      - key: PORT
-        value: "10000"
-      - key: FLASK_DEBUG
-        value: "False"
+            envVars:
+              - key: OPENAI_API_KEY
+                sync: false
+              - key: NEWS_API_KEY
+                sync: false
+              - key: FLASK_SECRET_KEY
+                generateValue: true
+              - key: ADMIN_USERNAME
+                value: "admin"
+              - key: ADMIN_PASSWORD
+                value: "admin123"
+              - key: HOST
+                value: "0.0.0.0"
+              - key: PORT
+                value: "10000"
+              - key: FLASK_DEBUG
+                value: "False"

@@ -563,7 +563,11 @@ def update_user_preferences():
 
 @app.route('/admin')
 def admin():
-    """Admin page to view all user data"""
+    """Admin page to view all user data - requires authentication"""
+    # Check if user is authenticated as admin
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
+    
     # Load users from the actual users.json file (not encrypted)
     users = load_users_from_json()
     articles = load_articles()
@@ -584,9 +588,39 @@ def admin():
                          users_with_preferences=users_with_preferences,
                          total_articles=total_articles)
 
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    """Admin login page"""
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        # Simple admin credentials (in production, use environment variables)
+        admin_username = os.getenv('ADMIN_USERNAME', 'admin')
+        admin_password = os.getenv('ADMIN_PASSWORD', 'admin123')
+        
+        if username == admin_username and password == admin_password:
+            session['admin_logged_in'] = True
+            flash('Admin login successful!', 'success')
+            return redirect(url_for('admin'))
+        else:
+            flash('Invalid admin credentials!', 'error')
+    
+    return render_template('admin_login.html')
+
+@app.route('/admin/logout')
+def admin_logout():
+    """Admin logout"""
+    session.pop('admin_logged_in', None)
+    flash('Admin logged out successfully!', 'info')
+    return redirect(url_for('admin_login'))
+
 @app.route('/admin/export/csv')
 def export_users_csv():
-    """Export user data to CSV file"""
+    """Export user data to CSV file - requires admin authentication"""
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
+    
     try:
         # Load users data
         users = load_users_from_json()
@@ -634,7 +668,10 @@ def export_users_csv():
 
 @app.route('/admin/export/excel')
 def export_users_excel():
-    """Export user data to Excel file"""
+    """Export user data to Excel file - requires admin authentication"""
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
+    
     try:
         # Load users data
         users = load_users_from_json()
