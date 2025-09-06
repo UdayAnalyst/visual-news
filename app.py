@@ -282,8 +282,16 @@ def fetch_news_by_topic(topic, num_articles=1):
             else:
                 formatted_date = "Unknown date"
             
-            # Get placeholder image (no AI generation)
-            image_url = get_news_image(topic)
+            # Get image URL - use actual image from NewsAPI if available, otherwise use placeholder
+            url_to_image = article.get("urlToImage")
+            if (url_to_image and 
+                url_to_image != "null" and 
+                url_to_image.strip() and 
+                url_to_image.startswith(('http://', 'https://')) and
+                any(ext in url_to_image.lower() for ext in ['.jpg', '.jpeg', '.png', '.gif', '.webp'])):
+                image_url = url_to_image
+            else:
+                image_url = get_news_image(topic)
             
             # Create quick notes
             quick_notes = create_quick_notes(description)
