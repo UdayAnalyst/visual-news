@@ -128,6 +128,17 @@ def load_users():
     """Load users from secure storage"""
     return security_manager.load_users()
 
+def load_users_from_json():
+    """Load users from regular JSON file for admin display"""
+    try:
+        if os.path.exists('users.json'):
+            with open('users.json', 'r') as f:
+                return json.load(f)
+        return {}
+    except Exception as e:
+        print(f"Error loading users from JSON: {e}")
+        return {}
+
 def save_users(users):
     """Save users to secure storage"""
     return security_manager.save_users(users)
@@ -545,7 +556,8 @@ def update_user_preferences():
 @app.route('/admin')
 def admin():
     """Admin page to view all user data"""
-    users = load_users()
+    # Load users from the actual users.json file (not encrypted)
+    users = load_users_from_json()
     articles = load_articles()
     
     # Calculate some statistics
