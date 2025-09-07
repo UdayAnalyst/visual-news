@@ -320,15 +320,16 @@ def fetch_news_by_topic(topic, num_articles=1):
             else:
                 formatted_date = "Unknown date"
             
-            # Get image URL - use actual image from NewsAPI if available, otherwise use placeholder
+            # Get image URL - prioritize placeholder for reliability
             url_to_image = article.get("urlToImage")
             if (url_to_image and 
                 url_to_image != "null" and 
                 url_to_image.strip() and 
                 url_to_image.startswith(('http://', 'https://')) and
                 any(ext in url_to_image.lower() for ext in ['.jpg', '.jpeg', '.png', '.gif', '.webp'])):
-                image_url = url_to_image
-                print(f"DEBUG: Using real image for {topic}: {image_url[:50]}...")
+                # Use placeholder for now to ensure reliability
+                image_url = get_news_image(topic)
+                print(f"DEBUG: Using placeholder for {topic} (real image available but using placeholder for reliability)")
             else:
                 image_url = get_news_image(topic)
                 print(f"DEBUG: Using placeholder image for {topic}: {image_url}")
@@ -518,42 +519,57 @@ def api_swipe():
 @require_auth
 def api_article_engagement():
     """API endpoint to handle article likes/dislikes"""
-    data = request.get_json()
-    article_id = data.get('article_id')
-    action = data.get('action')
-    is_active = data.get('is_active', True)
-    
-    if not article_id or not action:
-        return jsonify({'error': 'Missing article_id or action'}), 400
-    
-    articles = load_articles()
-    
-    if article_id not in articles:
-        articles[article_id] = {
-            'likes': 0,
-            'dislikes': 0,
-            'views': 0,
-            'created_at': datetime.now().isoformat()
-        }
-    
-    if action == 'like':
-        if is_active:
-            articles[article_id]['likes'] += 1
-        else:
-            articles[article_id]['likes'] = max(0, articles[article_id]['likes'] - 1)
-    elif action == 'dislike':
-        if is_active:
-            articles[article_id]['dislikes'] += 1
-        else:
-            articles[article_id]['dislikes'] = max(0, articles[article_id]['dislikes'] - 1)
-    
-    save_articles(articles)
-    
-    return jsonify({
-        'success': True,
-        'likes': articles[article_id]['likes'],
-        'dislikes': articles[article_id]['dislikes']
-    })
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'No JSON data provided'}), 400
+            
+        article_id = data.get('article_id')
+        action = data.get('action')
+        is_active = data.get('is_active', True)
+        
+        print(f"DEBUG: Article engagement request - ID: {article_id}, Action: {action}, Active: {is_active}")
+        
+        if not article_id or not action:
+            return jsonify({'error': 'Missing article_id or action'}), 400
+        
+        if action not in ['like', 'dislike']:
+            return jsonify({'error': 'Invalid action. Must be like or dislike'}), 400
+        
+        articles = load_articles()
+        
+        if article_id not in articles:
+            articles[article_id] = {
+                'likes': 0,
+                'dislikes': 0,
+                'views': 0,
+                'created_at': datetime.now().isoformat()
+            }
+        
+        if action == 'like':
+            if is_active:
+                articles[article_id]['likes'] += 1
+            else:
+                articles[article_id]['likes'] = max(0, articles[article_id]['likes'] - 1)
+        elif action == 'dislike':
+            if is_active:
+                articles[article_id]['dislikes'] += 1
+            else:
+                articles[article_id]['dislikes'] = max(0, articles[article_id]['dislikes'] - 1)
+        
+        save_articles(articles)
+        
+        print(f"DEBUG: Updated engagement - Likes: {articles[article_id]['likes']}, Dislikes: {articles[article_id]['dislikes']}")
+        
+        return jsonify({
+            'success': True,
+            'likes': articles[article_id]['likes'],
+            'dislikes': articles[article_id]['dislikes']
+        })
+        
+    except Exception as e:
+        print(f"ERROR: Article engagement failed: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
 
 @app.route('/api/topics')
 @require_auth

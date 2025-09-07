@@ -238,7 +238,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <img src="${article.image_url || getDefaultImage(article.topic)}" alt="${article.title}" 
                          onload="handleImageLoad(this)" 
                          onerror="handleImageError(this)"
-                         style="opacity: 0; transition: opacity 0.3s ease;">
+                         style="opacity: 0; transition: opacity 0.3s ease;"
+                         loading="lazy">
                     ${article.likes > 0 ? `
                         <div class="popularity-badge">
                             <i class="fas fa-fire"></i>
@@ -290,12 +291,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="engagement-buttons">
                         <button class="engagement-btn like-btn ${userEngagement.liked ? 'active' : ''}" 
                                 data-article-id="${articleId}" 
-                                onclick="handleArticleEngagement('${articleId}', 'like')">
+                                data-action="like">
                             <i class="fas fa-heart"></i>
                         </button>
                         <button class="engagement-btn dislike-btn ${userEngagement.disliked ? 'active' : ''}" 
                                 data-article-id="${articleId}" 
-                                onclick="handleArticleEngagement('${articleId}', 'dislike')">
+                                data-action="dislike">
                             <i class="fas fa-thumbs-down"></i>
                         </button>
                     </div>
@@ -305,6 +306,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
         newsCard.classList.add('new-card');
         setTimeout(() => newsCard.classList.remove('new-card'), 500);
+        
+        // Add event listeners for engagement buttons
+        const engagementButtons = newsCard.querySelectorAll('.engagement-btn');
+        engagementButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const articleId = this.getAttribute('data-article-id');
+                const action = this.getAttribute('data-action');
+                handleArticleEngagement(articleId, action);
+            });
+        });
+        
+        // Add image loading timeout
+        const img = newsCard.querySelector('img');
+        if (img) {
+            const imageTimeout = setTimeout(() => {
+                if (img.style.opacity === '0' || img.style.opacity === '') {
+                    console.log('Image loading timeout, using fallback');
+                    handleImageError(img);
+                }
+            }, 3000); // 3 second timeout
+            
+            img.addEventListener('load', () => {
+                clearTimeout(imageTimeout);
+            });
+            
+            img.addEventListener('error', () => {
+                clearTimeout(imageTimeout);
+            });
+        }
     }
 
     function handleImageLoad(img) {
@@ -315,16 +345,31 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Image failed to load, using fallback');
         // Create a simple colored placeholder based on topic
         const article = currentNews[currentIndex];
+        if (!article) {
+            console.error('No current article found for image fallback');
+            return;
+        }
+        
         const topicConfig = getTopicConfig(article.topic);
         const color = topicConfig.color.replace('text-', '').replace('danger', 'dc3545').replace('primary', '007bff').replace('warning', 'ffc107').replace('success', '28a745').replace('info', '17a2b8').replace('purple', '6f42c1').replace('orange', 'fd7e14').replace('green', '20c997');
         
-        img.src = `data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="100%" height="100%" fill="%23${color}"/><text x="50%" y="50%" font-family="Arial" font-size="24" fill="white" text-anchor="middle" dy=".3em">${topicConfig.name}</text></svg>`;
+        const fallbackImage = `data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="100%" height="100%" fill="%23${color}"/><text x="50%" y="50%" font-family="Arial" font-size="24" fill="white" text-anchor="middle" dy=".3em">${topicConfig.name}</text></svg>`;
+        
+        img.src = fallbackImage;
         img.style.opacity = '1';
+        img.onerror = null; // Prevent infinite loop
     }
 
     function handleArticleEngagement(articleId, action) {
+        console.log(`Handling ${action} for article ${articleId}`);
         const button = document.querySelector(`[data-article-id="${articleId}"].${action}-btn`);
+        if (!button) {
+            console.error(`Button not found for article ${articleId} and action ${action}`);
+            return;
+        }
+        
         const isActive = button.classList.contains('active');
+        console.log(`Button is currently ${isActive ? 'active' : 'inactive'}`);
         
         // Toggle engagement
         if (isActive) {
@@ -345,7 +390,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Remove opposite engagement if exists
             const oppositeAction = action === 'like' ? 'dislike' : 'like';
             const oppositeButton = document.querySelector(`[data-article-id="${articleId}"].${oppositeAction}-btn`);
-            if (oppositeButton.classList.contains('active')) {
+            if (oppositeButton && oppositeButton.classList.contains('active')) {
                 oppositeButton.classList.remove('active');
                 userEngagements[articleId][oppositeAction] = false;
             }
@@ -366,7 +411,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 action: action,
                 is_active: !isActive
             })
-        }).catch(error => console.error('Error updating engagement:', error));
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Engagement updated successfully:', data);
+            // Update the engagement stats display
+            const likesSpan = document.querySelector(`[data-article-id="${articleId}"]`).closest('.article-engagement').querySelector('.engagement-stat:first-child span');
+            const dislikesSpan = document.querySelector(`[data-article-id="${articleId}"]`).closest('.article-engagement').querySelector('.engagement-stat:nth-child(2) span');
+            
+            if (likesSpan) likesSpan.textContent = data.likes || 0;
+            if (dislikesSpan) dislikesSpan.textContent = data.dislikes || 0;
+        })
+        .catch(error => {
+            console.error('Error updating engagement:', error);
+            // Revert the button state on error
+            if (isActive) {
+                button.classList.add('active');
+            } else {
+                button.classList.remove('active');
+            }
+        });
     }
 
     function swipeNews(action) {
