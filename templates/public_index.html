@@ -183,7 +183,7 @@
             container.innerHTML = `
                 <div class="col-md-4 mb-4">
                     <div class="card news-card h-100">
-                        <img src="data:image/svg+xml;charset=utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"300\"><rect width=\"100%\" height=\"100%\" fill=\"%23dc3545\"/><text x=\"50%\" y=\"50%\" font-family=\"Arial\" font-size=\"24\" fill=\"white\" text-anchor=\"middle\" dy=\".3em\">Economy News</text></svg>" 
+                        <img src="${generatePlaceholderImage('Economy News', 'text-danger')}" 
                              class="card-img-top" 
                              alt="Economy News"
                              style="height: 200px; object-fit: cover;">
@@ -199,7 +199,7 @@
                 </div>
                 <div class="col-md-4 mb-4">
                     <div class="card news-card h-100">
-                        <img src="data:image/svg+xml;charset=utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"300\"><rect width=\"100%\" height=\"100%\" fill=\"%23007bff\"/><text x=\"50%\" y=\"50%\" font-family=\"Arial\" font-size=\"24\" fill=\"white\" text-anchor=\"middle\" dy=\".3em\">Tech News</text></svg>" 
+                        <img src="${generatePlaceholderImage('Tech News', 'text-primary')}" 
                              class="card-img-top" 
                              alt="Tech News"
                              style="height: 200px; object-fit: cover;">
@@ -214,6 +214,34 @@
                     </div>
                 </div>
             `;
+        }
+
+        function generatePlaceholderImage(topicName, colorClass) {
+            // Convert color class to hex color
+            const colorMap = {
+                'text-danger': '#dc3545',
+                'text-primary': '#007bff', 
+                'text-warning': '#ffc107',
+                'text-success': '#28a745',
+                'text-info': '#17a2b8',
+                'text-purple': '#6f42c1',
+                'text-orange': '#fd7e14',
+                'text-green': '#20c997'
+            };
+            
+            const color = colorMap[colorClass] || '#007bff';
+            const textColor = ['text-danger', 'text-primary', 'text-success', 'text-info', 'text-purple', 'text-orange', 'text-green'].includes(colorClass) ? '#ffffff' : '#000000';
+            
+            // Create SVG content
+            const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300">
+                <rect width="100%" height="100%" fill="${color}"/>
+                <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="24" fill="${textColor}" text-anchor="middle" dy=".3em">${topicName}</text>
+            </svg>`;
+            
+            // Encode to base64
+            const base64Encoded = btoa(unescape(encodeURIComponent(svgContent)));
+            
+            return `data:image/svg+xml;base64,${base64Encoded}`;
         }
 
         function displayNews(articles, topic) {
@@ -234,13 +262,13 @@
                 newsCard.className = 'col-md-4 mb-4';
                 newsCard.innerHTML = `
                     <div class="card news-card h-100">
-                        <img src="${article.image_url || 'data:image/svg+xml;charset=utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"300\"><rect width=\"100%\" height=\"100%\" fill=\"%23007bff\"/><text x=\"50%\" y=\"50%\" font-family=\"Arial\" font-size=\"24\" fill=\"white\" text-anchor=\"middle\" dy=\".3em\">News Image</text></svg>'}" 
-                             class="card-img-top" 
-                             alt="${article.title || 'News image'}"
-                             loading="lazy"
-                             onerror="this.src='data:image/svg+xml;charset=utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"300\"><rect width=\"100%\" height=\"100%\" fill=\"%2328a745\"/><text x=\"50%\" y=\"50%\" font-family=\"Arial\" font-size=\"24\" fill=\"white\" text-anchor=\"middle\" dy=\".3em\">News Image</text></svg>'; this.onerror=null;"
-                             onload="this.style.opacity='1'"
-                             style="height: 200px; object-fit: cover; opacity: 0; transition: opacity 0.3s ease;">
+                    <img src="${article.image_url || generatePlaceholderImage('News Image', 'text-primary')}" 
+                         class="card-img-top" 
+                         alt="${article.title || 'News image'}"
+                         loading="lazy"
+                         onerror="this.src=generatePlaceholderImage('News Image', 'text-success'); this.onerror=null;"
+                         onload="this.style.opacity='1'"
+                         style="height: 200px; object-fit: cover; opacity: 0; transition: opacity 0.3s ease;">
                         <div class="card-body">
                             <h5 class="card-title">${article.title || 'No title'}</h5>
                             <p class="card-text">${article.summary || article.description || 'No summary available'}</p>

@@ -219,7 +219,38 @@ def require_auth(f):
 def get_news_image(topic):
     """Get placeholder image for topic - no AI generation"""
     config = TOPIC_CONFIGS.get(topic, TOPIC_CONFIGS['inflation'])
-    return config['placeholder']
+    return generate_placeholder_image(config['name'], config['color'])
+
+def generate_placeholder_image(topic_name, color_class):
+    """Generate a proper base64-encoded SVG data URI"""
+    import base64
+    
+    # Convert color class to hex color
+    color_map = {
+        'text-danger': '#dc3545',
+        'text-primary': '#007bff', 
+        'text-warning': '#ffc107',
+        'text-success': '#28a745',
+        'text-info': '#17a2b8',
+        'text-purple': '#6f42c1',
+        'text-orange': '#fd7e14',
+        'text-green': '#20c997'
+    }
+    
+    color = color_map.get(color_class, '#007bff')
+    text_color = '#ffffff' if color_class in ['text-danger', 'text-primary', 'text-success', 'text-info', 'text-purple', 'text-orange', 'text-green'] else '#000000'
+    
+    # Create SVG content
+    svg_content = f'''<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300">
+        <rect width="100%" height="100%" fill="{color}"/>
+        <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="24" fill="{text_color}" text-anchor="middle" dy=".3em">{topic_name}</text>
+    </svg>'''
+    
+    # Encode to base64
+    svg_bytes = svg_content.encode('utf-8')
+    base64_encoded = base64.b64encode(svg_bytes).decode('utf-8')
+    
+    return f"data:image/svg+xml;base64,{base64_encoded}"
 
 def create_quick_notes(text):
     """Create quick notes instead of AI summaries"""

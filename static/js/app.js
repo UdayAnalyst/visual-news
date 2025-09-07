@@ -351,9 +351,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         const topicConfig = getTopicConfig(article.topic);
-        const color = topicConfig.color.replace('text-', '').replace('danger', 'dc3545').replace('primary', '007bff').replace('warning', 'ffc107').replace('success', '28a745').replace('info', '17a2b8').replace('purple', '6f42c1').replace('orange', 'fd7e14').replace('green', '20c997');
-        
-        const fallbackImage = `data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="100%" height="100%" fill="%23${color}"/><text x="50%" y="50%" font-family="Arial" font-size="24" fill="white" text-anchor="middle" dy=".3em">${topicConfig.name}</text></svg>`;
+        const fallbackImage = generatePlaceholderImage(topicConfig.name, topicConfig.color);
         
         img.src = fallbackImage;
         img.style.opacity = '1';
@@ -563,8 +561,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function getDefaultImage(topic) {
         const topicConfig = getTopicConfig(topic);
-        const color = topicConfig.color.replace('text-', '').replace('danger', 'dc3545').replace('primary', '007bff').replace('warning', 'ffc107').replace('success', '28a745').replace('info', '17a2b8').replace('purple', '6f42c1').replace('orange', 'fd7e14').replace('green', '20c997');
-        return `data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><rect width="100%" height="100%" fill="%23${color}"/><text x="50%" y="50%" font-family="Arial" font-size="24" fill="white" text-anchor="middle" dy=".3em">${topicConfig.name}</text></svg>`;
+        return generatePlaceholderImage(topicConfig.name, topicConfig.color);
+    }
+    
+    function generatePlaceholderImage(topicName, colorClass) {
+        // Convert color class to hex color
+        const colorMap = {
+            'text-danger': '#dc3545',
+            'text-primary': '#007bff', 
+            'text-warning': '#ffc107',
+            'text-success': '#28a745',
+            'text-info': '#17a2b8',
+            'text-purple': '#6f42c1',
+            'text-orange': '#fd7e14',
+            'text-green': '#20c997'
+        };
+        
+        const color = colorMap[colorClass] || '#007bff';
+        const textColor = ['text-danger', 'text-primary', 'text-success', 'text-info', 'text-purple', 'text-orange', 'text-green'].includes(colorClass) ? '#ffffff' : '#000000';
+        
+        // Create SVG content
+        const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300">
+            <rect width="100%" height="100%" fill="${color}"/>
+            <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="24" fill="${textColor}" text-anchor="middle" dy=".3em">${topicName}</text>
+        </svg>`;
+        
+        // Encode to base64
+        const base64Encoded = btoa(unescape(encodeURIComponent(svgContent)));
+        
+        return `data:image/svg+xml;base64,${base64Encoded}`;
     }
 
     // Global functions
